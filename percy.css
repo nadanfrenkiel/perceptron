@@ -57,3 +57,7 @@ body, html {
 	height: 20px;
 	border: 1px solid black;
 }
+
+.grid-cell.on {
+	background-color: brown;
+}
