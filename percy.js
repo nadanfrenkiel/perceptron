@@ -14,9 +14,9 @@ function initPage() {
 
 	createGrid();
 	earlyDevelopment();
+	$(".calc").click(onCalc);
 	$(".tru").click(onTrue);
 	$(".false").click(onFalse);
-
 	// displayBinary([1, 0, 1, 1, 0 ]);
 
 	console.log(`page initialized with ${brain.length} neurons`);
@@ -55,6 +55,18 @@ function displayBinary (array) {
 	$(".banini").text(binaryStr);
 	var letter = "a".charCodeAt(0) + parseInt(binaryStr, 2);
 	$(".spanini").text(String.fromCharCode(letter));
+}
+
+function onCalc () {
+	var value = [];
+	for (let EA = 0; EA < brain.length; EA++) {
+		const neuron = brain[EA];
+		neuron.think ();
+		value.push (neuron.value);
+	}
+	displayBinary (value);
+	
+	console.log("Doin magic");
 }
 
 function onTrue () {
