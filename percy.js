@@ -2,8 +2,6 @@
 import {Grid} from "./grid.js";
 import { Neuron } from "./neuron.js";
 
-console.log("percy.js loaded");
-
 var GRID_SIZE = 7;
 var IQ = 5;
 var grid = new Grid(GRID_SIZE, GRID_SIZE);
@@ -74,7 +72,13 @@ function onTrue () {
 }
 
 function onFalse () {
-	console.log("False pressed");
+//for loop on the brain array
+//if i hath been clicked i shall reward the 1s and do nothing with the 0s and also the 1s in the bits that were off will be punished
+// For each neuron: take its. value feild and put (in an internal array) every neuron that had a value of 1
+// See if its on, if so give less weight to the connections that were on
+// if it`s off do not nothing.GOVE EM MORE WEIGHT
+	
+console.log("False pressed");
 }
 
 function createRow(rowNumber) {
@@ -98,3 +102,4 @@ function updateGrid() {
 
 
 $(initPage);
+console.log("percy.js loaded");
