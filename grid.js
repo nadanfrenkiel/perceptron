@@ -3,7 +3,7 @@ export class Grid {
 		this.cols = cols;
 		this.rows = rows;
 		this.cells = new Array(cols * rows);
-		this.cells.fill(0);
+		this.cells.fill(0); 
 	}
 	
 

@@ -22,9 +22,15 @@ export class Neuron {
 		console.log ("I AM THINKING");
 	}
 	amphitheatre (col, row) {
+		var place = row * this.grid.cols + col;
+		
+		this.friendGroup [place].weight += 0.05
 		console.log(`amplifying connection to ${col}/${row}`);
 	}
 	lowerTheWheight (col, row) {
+		var place = row * this.grid.cols + col;
+		
+		this.friendGroup [place].weight -= 0.05
 		console.log(`attenuating connection to ${col}/${row}`);
 	}
 
