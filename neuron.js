@@ -1,9 +1,10 @@
 export class Neuron { 
 	constructor (grid) {
-		this.grid = grid;
+		this.grid = grid; 
 		this.value = 0;
 		this.friendGroup = [];
 		this.createConnections (grid);
+		this.threashold = this.friendGroup.length / 2;
 	}
 
 	think () {
@@ -13,7 +14,7 @@ export class Neuron {
 			const element = this.friendGroup[index];
 			currentNeuron += element.weight * this.grid.getCell (element.col, element.row);		
 		}
-		if (currentNeuron < 12) {
+		if (currentNeuron < this.threashold) {
 			this.value = 0;
 		}
 		else {
@@ -23,15 +24,16 @@ export class Neuron {
 	}
 	amphitheatre (col, row) {
 		var place = row * this.grid.cols + col;
-		
-		this.friendGroup [place].weight += 0.05
-		console.log(`amplifying connection to ${col}/${row}`);
+//		this.friendGroup [place].weight = Math.min(1,
+			 this.friendGroup [place].weight += 0.05
+//		this.friendGroup [place].weight += 0.05
+		console.log(`amplifying connection to ${col}/${row} and ${this.friendGroup [place].weight} is the new weight!!!!`);
 	}
 	lowerTheWheight (col, row) {
 		var place = row * this.grid.cols + col;
-		
-		this.friendGroup [place].weight -= 0.05
-		console.log(`attenuating connection to ${col}/${row}`);
+		this.friendGroup [place].weight = Math.max(0, this.friendGroup [place].weight -= 0.05)
+//		this.friendGroup [place].weight -= 0.05
+		console.log(`attenuating connection to ${col}/${row} and ${this.friendGroup [place].weight} is the new weight!!!!`);
 	}
 
 	roundOrThin() {
