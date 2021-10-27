@@ -2,7 +2,7 @@
 import { Grid } from "./grid.js";
 import { Neuron } from "./neuron.js";
 
-var GRID_SIZE = 5;
+var GRID_SIZE = 7;
 var IQ = 5;
 var grid = new Grid(GRID_SIZE, GRID_SIZE);
 var brain = [];
@@ -15,6 +15,7 @@ function initPage() {
 	$(".calc").click(onCalc);
 	$(".tru").click(onTrue);
 	$(".false").click(onFalse);
+	grp();
 	// displayBinary([1, 0, 1, 1, 0 ]);
 
 	console.log(`page initialized with ${brain.length} neurons`);
@@ -68,6 +69,7 @@ function onCalc() {
 }
 
 function onTrue() {
+	onCalc ();
 	console.log("True pressed");
 }
 
@@ -97,6 +99,7 @@ function onFalse() {
 		}
 	}
 	console.log("False pressed");
+	onCalc ();
 }
 
 function createRow(rowNumber) {
@@ -116,6 +119,16 @@ function updateCell(col, row) {
 
 function updateGrid() {
 
+}
+
+function grp() {
+	var codeA = "A".charCodeAt(0),
+		codeZ = "Z".charCodeAt(0);
+	for (var code = codeA; code <= codeZ; code++) {
+		var str = String.fromCharCode(code);
+		console.log(str);
+	}
+	$(".select-content")
 }
 
 
