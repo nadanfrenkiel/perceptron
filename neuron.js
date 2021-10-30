@@ -48,6 +48,18 @@ export class Neuron {
 		}
 		console.log(`The neuron now has ${this.friendGroup.length} connections`);
 	}
+
+	load(data) {
+		this.friendGroup = data.map(rec => {
+			var c = new Connection(rec.col, rec.row);
+			c.weight = rec.weight;
+			return c;
+		});
+	}
+
+	save() {
+		return this.friendGroup.slice();
+	}
 }
 
 class Connection {

@@ -1,0 +1,35 @@
+.data-server-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #555;
+  padding: 10px 5px;
+  position: relative;
+}
+
+.data-server-container .data-server-title {
+  position: absolute;
+  top: -0.9rem;
+  left: 5px;
+  background-color: white;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.data-server-container .data-server-select-container {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.data-server-container .data-server-select-container .data-server-select {
+  max-width: 120px;
+}
+
+.data-server-container .data-server-select-container .data-server-select .option:first-child {
+  color: #999;
+}
+
+.data-server-container .data-server-save-container {
+  display: flex;
+  justify-content: flex-end;
+}

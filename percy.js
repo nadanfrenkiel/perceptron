@@ -1,6 +1,9 @@
 
 import { Grid } from "./grid.js";
 import { Neuron } from "./neuron.js";
+import $ from "./jquery.module.js"
+import { DataServer } from "./dataServer.js"
+//import * as $ from "./jquery.js";
 
 var GRID_SIZE = 7;
 var IQ = 5;
@@ -16,6 +19,14 @@ function initPage() {
 	$(".tru").click(onTrue);
 	$(".false").click(onFalse);
 	grp();
+	var ds = new DataServer("network", ".load-network-container");
+	ds.init();
+	$(ds).on("save", onSaveNetwork)
+		.on("load", onLoadNetwork);
+	ds = new DataServer("grid", ".load-grid-container");
+	ds.init();
+	$(ds).on("save", onSaveGrid)
+		.on("load", onLoadGrid);
 	// displayBinary([1, 0, 1, 1, 0 ]);
 
 	console.log(`page initialized with ${brain.length} neurons`);
@@ -102,6 +113,25 @@ function onFalse() {
 	onCalc ();
 }
 
+function onSaveNetwork(evt, ds, name) {
+	const data = brain.map(n => n.save());
+	ds.saveData(name, data);
+}
+
+function onLoadNetwork(evt, data, ds) {
+	brain.forEach((neuron, i) => neuron.load(data[i]))
+}
+
+function onLoadGrid(evt, data, ds) {
+	grid.load(data);
+	updateGrid();
+}
+
+function onSaveGrid(evt, ds, name) {
+	const data = grid.save();
+	ds.saveData(name, data);
+}
+
 function createRow(rowNumber) {
 	return $('<div class="grid-row"' + ' data-row-number="' + rowNumber + '"></div>');
 }
@@ -112,13 +142,19 @@ function addCellToRow($row, row, col) {
 
 function updateCell(col, row) {
 	var data = grid.getCell(col, row);
-	var cell = $(`div.grid-cell[data-row-number="${row}"][data-col-number="${col}"]`);
-	cell.toggleClass("on", data);
+	setCell(col, row, data);
 
 }
 
 function updateGrid() {
+	grid.forAllCells((data, col, row) => {
+		setCell(col, row, Boolean(data));
+	})
+}
 
+function setCell(col, row, data) {
+	var cell = $(`div.grid-cell[data-row-number="${row}"][data-col-number="${col}"]`);
+	cell.toggleClass("on", data);
 }
 
 function grp() {
