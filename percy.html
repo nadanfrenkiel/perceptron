@@ -2,7 +2,8 @@
 
 <head>
 	<link rel="stylesheet" href="./percy.css" />
-	<script src="./jquery.min.js"></script>
+	<link rel="stylesheet" href="./data-server.css" />
+	<!--<script src="./jquery.min.js" type="module"></script>-->
 	<script src="percy.js" type="module"></script>
 </head>
 
@@ -13,13 +14,14 @@
 		</div>
 		<div class="content">
 			<div class="canvas">
-				<div class="draw-grid">
-				</div>
-				<div> 
-					<select class="select-net-state"></select>
-					<button class="btn-save">Save net state</button>
-					<select class="select-content"></select>
+				<div class="controls-container">
+					<div>
+						<div class="load-network-container"></div>
+						<div class="load-grid-container"></div>
+					</div>
 					<button class="calc"> Do some magic </button>
+				</div>
+				<div class="draw-grid">
 				</div>
 			</div>
 			<div class="info">Info</div>

@@ -22,5 +22,22 @@ export class Grid {
 			}
 		}
 	}
+
+	load(data) {
+		this.cells.fill(0); 
+		if (Array.isArray(data)) {
+			data.forEach(rec => {
+				this.setCell(rec.col, rec.row, rec.value);
+			})
+		}
+	}
+
+	save() {
+		const ret = [];
+		this.forAllCells((value, col, row) => {
+			ret.push({ value, col, row });
+		})
+		return ret;
+	}
 }
 
