@@ -22,16 +22,18 @@ export class Neuron {
 		}
 		console.log ("I AM THINKING");
 	}
+	
+	//amplify the weights
 	amphitheatre (col, row) {
 		var place = row * this.grid.cols + col;
 //		this.friendGroup [place].weight = Math.min(1,
-			 this.friendGroup [place].weight += 0.05
+			 this.friendGroup [place].weight += 0.005
 //		this.friendGroup [place].weight += 0.05
 		console.log(`amplifying connection to ${col}/${row} and ${this.friendGroup [place].weight} is the new weight!!!!`);
 	}
 	lowerTheWheight (col, row) {
 		var place = row * this.grid.cols + col;
-		this.friendGroup [place].weight = Math.max(0, this.friendGroup [place].weight -= 0.05)
+		this.friendGroup [place].weight = Math.max(0, this.friendGroup [place].weight -= 0.005)
 //		this.friendGroup [place].weight -= 0.05
 		console.log(`attenuating connection to ${col}/${row} and ${this.friendGroup [place].weight} is the new weight!!!!`);
 	}

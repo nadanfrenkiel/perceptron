@@ -1,4 +1,3 @@
-
 import { Grid } from "./grid.js";
 import { Neuron } from "./neuron.js";
 import $ from "./jquery.module.js"
@@ -15,10 +14,17 @@ function initPage() {
 
 	createGrid();
 	earlyDevelopment();
+
+
+	createNeuronViewer();
+	createDataGrid ();
+	// attach click handlers to the various UI buttons
 	$(".calc").click(onCalc);
 	$(".tru").click(onTrue);
 	$(".false").click(onFalse);
-	grp();
+
+	// grp();
+	// Initialize the data servers. Each supports saving and loading grid or network states.
 	var ds = new DataServer("network", ".load-network-container");
 	ds.init();
 	$(ds).on("save", onSaveNetwork)
@@ -32,13 +38,82 @@ function initPage() {
 	console.log(`page initialized with ${brain.length} neurons`);
 
 }
-
+/**
+ * Creates the neurons
+ */
 function earlyDevelopment() {
 	for (var i = 0; i < IQ; ++i) {
 		brain.push(new Neuron(grid))
 	}
 }
 
+function createNeuronViewer()  {
+	/*
+	1. create the neuron chooser, in the neuron-chooser container
+	2. Create the neuron viewer grid in the neu-weights container
+	*/
+	createNeuronChooser(".neuron-chooser");
+	createNeuronGrid(".neu-weights");
+}
+
+/**
+ * Creates a ui that allows selection of a single neuron for display in the neuron visualizer
+ * @param {*} selector 
+ */
+function createNeuronChooser(selector) {
+	// <button class="neu-bton">1</button>
+	var container = $(selector);
+	for (var i = 0; i < brain.length; ++i) {
+		var neuron = brain[i];
+		var btn = $(`<button class="neu-button" data-neuron-number="${i}">${i}</button>`);
+		btn.on("click", onNeuronSelected);
+		container.append(btn);
+	}
+}
+
+function onNeuronSelected(event) {
+	var neuronIndex = $(event.currentTarget).attr("data-neuron-number");
+	displayNeuron(brain[neuronIndex]);
+}
+
+function displayNeuron(neuron) {
+	console.log("Displaying weights", neuron.friendGroup);
+}
+
+//need the cells to refer to the current neuron or do I only create the grid
+function createDataGrid (currentNeuron) {
+	var what = $(currentNeuron);
+	for (var i = 0; i < grid.length; i++) {
+		var btn = $(`<button class="neu-cell">${i}</button>`);
+		container.append(btn);
+	}
+
+}
+
+//function neuronGridData
+
+
+
+/**
+ * Creates a grid that visualizes a specific neuron's weights
+ * @param {*} selector 
+ */
+function createNeuronGrid(selector) {
+	var $grid = $(selector);
+
+	for (var row = 0; row < GRID_SIZE; ++row) {
+		var $row = createRow(row);
+		for (var col = 0; col < GRID_SIZE; ++col) {
+			addCellToRow($row, row, col);
+		}
+		$grid.append($row);
+	}
+}
+
+/**
+ * Creates the Input Grid interface, with cells
+ * that respond to clicks and toggle their state
+ */
 function createGrid() {
 	var $grid = $(".draw-grid");
 
@@ -49,7 +124,7 @@ function createGrid() {
 		}
 		$grid.append($row);
 	}
-	$(document).on("click", ".grid-cell", function (event) {
+	$(document).on("click", ".draw-grid .grid-cell", function (event) {
 		var cell = $(event.currentTarget);
 		let col = Number(cell.attr("data-col-number")),
 			row = Number(cell.attr("data-row-number"));
@@ -153,10 +228,13 @@ function updateGrid() {
 }
 
 function setCell(col, row, data) {
-	var cell = $(`div.grid-cell[data-row-number="${row}"][data-col-number="${col}"]`);
+	var cell = $(`.draw-grid div.grid-cell[data-row-number="${row}"][data-col-number="${col}"]`);
 	cell.toggleClass("on", data);
 }
 
+/**
+ * Just prints the letters A-Z
+ */
 function grp() {
 	var codeA = "A".charCodeAt(0),
 		codeZ = "Z".charCodeAt(0);

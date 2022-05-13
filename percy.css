@@ -60,11 +60,19 @@ body, html {
 }
 
 .grid-cell {
-	width: 20px;
-	height: 20px;
+	width: 50px;
+	height: 50px;
 	border: 1px solid black;
 }
 
 .grid-cell.on {
 	background-color: brown;
+}
+
+h2 {
+	display:inline;
+}
+
+h7 {
+	display:block;
 }
