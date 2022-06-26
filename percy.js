@@ -77,6 +77,16 @@ function onNeuronSelected(event) {
 }
 
 function displayNeuron(neuron) {
+	// loop on all cells of the gridplane
+	// for each seat:
+		//	Take weight and convert into color
+		//	Take color and pass it on to the grid
+	for (var i = 0; i < neuron.friendGroup.length; i++) {
+		var newCellColor = algorithimize (neuron.friendGroup [i]);
+	neuron.friendGroup [i] = newCellColor
+	}
+	// take all of its weights and put them through the algorithm
+	// take the weights after they were put throuh the algorithm and pass them off as colors to be displayed
 	console.log("Displaying weights", neuron.friendGroup);
 }
 
@@ -92,6 +102,10 @@ function createDataGrid (currentNeuron) {
 
 //function neuronGridData
 
+function normlize(current, min, max) {
+	var currentNorm = (current - min) / (max - min);
+	return currentNorm;
+}
 
 
 /**
@@ -104,7 +118,8 @@ function createNeuronGrid(selector) {
 	for (var row = 0; row < GRID_SIZE; ++row) {
 		var $row = createRow(row);
 		for (var col = 0; col < GRID_SIZE; ++col) {
-			addCellToRow($row, row, col);
+			var cell = addCellToRow($row, row, col);
+			cell.addClass("scale");
 		}
 		$grid.append($row);
 	}
@@ -212,7 +227,9 @@ function createRow(rowNumber) {
 }
 
 function addCellToRow($row, row, col) {
-	$row.append($(`<div class="grid-cell" data-row-number="${row}" data-col-number="${col}"></div>`));
+	var cell = $(`<div class="grid-cell" data-row-number="${row}" data-col-number="${col}"></div>`);
+	$row.append(cell);
+	return cell;
 }
 
 function updateCell(col, row) {
