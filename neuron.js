@@ -68,6 +68,6 @@ class Connection {
 	constructor(col, row) {
 		this.col = col;
 		this.row = row;
-		this.weight = Math.random();
+		this.weight = -1 + Math.random() * 2;
 	}
 }
