@@ -2,12 +2,16 @@ import { Grid } from "./grid.js";
 import { Neuron } from "./neuron.js";
 import $ from "./jquery.module.js"
 import { DataServer } from "./dataServer.js"
+import { Colororo } from "./RGBcolor.js"
 //import * as $ from "./jquery.js";
 
 var GRID_SIZE = 7;
 var IQ = 5;
 var grid = new Grid(GRID_SIZE, GRID_SIZE);
 var brain = [];
+var startColor = "#0030F0";
+var endColor = "#c43947";
+var currentNeuron;
 
 function initPage() {
 	console.log("initializing page");
@@ -17,7 +21,7 @@ function initPage() {
 
 
 	createNeuronViewer();
-	createDataGrid ();
+	createDataGrid();
 	// attach click handlers to the various UI buttons
 	$(".calc").click(onCalc);
 	$(".tru").click(onTrue);
@@ -47,7 +51,7 @@ function earlyDevelopment() {
 	}
 }
 
-function createNeuronViewer()  {
+function createNeuronViewer() {
 	/*
 	1. create the neuron chooser, in the neuron-chooser container
 	2. Create the neuron viewer grid in the neu-weights container
@@ -71,19 +75,38 @@ function createNeuronChooser(selector) {
 	}
 }
 
+
+/**
+ * Input: a weight, NOT normalized
+ * Output: a string representing a color in [(13) - (14) - (12) - (9) - (E) - (7)] format
+ * @param {*} currentWeight 
+ * @returns 
+ */
+function algorithimize(currentWeight) {
+	//takes the weight of a cell and converts it into color
+	var norNum = normlize(currentWeight, -1, 1); //normlized num
+	var gradCol = new Colororo(startColor, endColor); //Instance of Colororo
+	var theGradient = gradCol.getGradient(norNum) //Instance of RGBColor
+	return theGradient.toRGB();
+}
+
 function onNeuronSelected(event) {
 	var neuronIndex = $(event.currentTarget).attr("data-neuron-number");
+	//currentNeuron = data-neuron-number somehow
 	displayNeuron(brain[neuronIndex]);
 }
 
 function displayNeuron(neuron) {
 	// loop on all cells of the gridplane
 	// for each seat:
-		//	Take weight and convert into color
-		//	Take color and pass it on to the grid
+	//	Take weight and convert into color
+	//	Take color and pass it on to the grid
+	var $grid = $(".neu-weights");
 	for (var i = 0; i < neuron.friendGroup.length; i++) {
-		var newCellColor = algorithimize (neuron.friendGroup [i]);
-	neuron.friendGroup [i] = newCellColor
+		var newCellColor = algorithimize(neuron.friendGroup[i].weight);
+		$grid.find(`[data-grid-position='${i}']`)
+			.css("background-color", newCellColor)
+			.attr("title", `Weight: ${neuron.friendGroup[i].weight}`);
 	}
 	// take all of its weights and put them through the algorithm
 	// take the weights after they were put throuh the algorithm and pass them off as colors to be displayed
@@ -91,7 +114,7 @@ function displayNeuron(neuron) {
 }
 
 //need the cells to refer to the current neuron or do I only create the grid
-function createDataGrid (currentNeuron) {
+function createDataGrid(currentNeuron) {
 	var what = $(currentNeuron);
 	for (var i = 0; i < grid.length; i++) {
 		var btn = $(`<button class="neu-cell">${i}</button>`);
@@ -120,6 +143,7 @@ function createNeuronGrid(selector) {
 		for (var col = 0; col < GRID_SIZE; ++col) {
 			var cell = addCellToRow($row, row, col);
 			cell.addClass("scale");
+			cell.attr("data-grid-position", col + row * GRID_SIZE);
 		}
 		$grid.append($row);
 	}
@@ -145,7 +169,7 @@ function createGrid() {
 			row = Number(cell.attr("data-row-number"));
 
 		var current = grid.getCell(col, row);
-		grid.setCell(col, row, current? 0 : 1);
+		grid.setCell(col, row, current ? 0 : 1);
 		updateCell(col, row);
 	});
 }
@@ -170,7 +194,7 @@ function onCalc() {
 }
 
 function onTrue() {
-	onCalc ();
+	onCalc();
 	console.log("True pressed");
 }
 
@@ -188,19 +212,19 @@ function onFalse() {
 				var connection = grid.getCell(b, a);
 				if (currentNeuron === 1) {
 					if (connection === 1) {
-						neuron.lowerTheWheight(b,a);
+						neuron.lowerTheWheight(b, a);
 					}
 				}
 				else if (currentNeuron === 0) {
 					if (connection === 1) {
-						neuron.amphitheatre(b,a);
+						neuron.amphitheatre(b, a);
 					}
 				}
 			}
 		}
 	}
 	console.log("False pressed");
-	onCalc ();
+	onCalc();
 }
 
 function onSaveNetwork(evt, ds, name) {

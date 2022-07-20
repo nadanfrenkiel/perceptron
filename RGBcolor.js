@@ -46,7 +46,8 @@ function toRGB(color) {
 }
 
 
-class Colororo {
+//"hes an importer exporter"  - gerorge 
+export class Colororo {
 	constructor (color1, color2) {
 		this.startColor = toRGB(color1);
 		this.endColor = toRGB(color2);
@@ -75,14 +76,26 @@ class RGBColor {
 		}
 	}
 
+	/**
+	 * Returns a string representation of this class for display purposes (e.g. console.log)
+	 * @returns 
+	 */
 	toString() {
 		return `Red: ${this.red}, Green: ${this.green}, Blue: ${this.blue}`;
 	}
 
+	/**
+	 * Returns the color value of this instance, in the CSS rgb(r, b, b) format
+	 * @returns 
+	 */
 	toRGB() {
 		return `rgb(${this.red} ${this.green} ${this.blue})`;
 	}
 
+	/**
+	 * Returns the color value of this instance, in the CSS hex format (#RRGGBB)
+	 * @returns 
+	 */
 	toHEX() {
 		return `#${this.toHEXDigit(this.red)}${this.toHEXDigit(this.green)}${this.toHEXDigit(this.blue)}}`
 	}
